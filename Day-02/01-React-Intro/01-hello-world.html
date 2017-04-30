@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React - Intro</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="jquery-3.2.1.js"></script>
+
+	<script type="text/babel">
+		var HelloWorld = React.createClass({
+			render : function(){
+								
+				/*var e1 = React.createElement('h1', {}, 'Welcome to React')
+				var e2 = React.createElement('hr', {}, null);
+				var e3 = React.createElement('p', {class : 'para'}, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, eius, consequuntur! Odio, nulla doloremque eaque sapiente, aliquid dolorem maiores soluta. Harum quo aperiam velit beatae, voluptatibus debitis, quae tempore earum.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ab nisi vitae quo architecto ratione quia, assumenda, vero, totam maiores sunt natus facere repudiandae. Eius illo, quasi facilis commodi voluptas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum quod quidem debitis quae consequatur veritatis, itaque id ipsam, quaerat harum necessitatibus expedita dolorum amet laudantium eum beatae optio inventore magni!')
+
+				return React.createElement('div', {}, [e1, e2, e3])*/
+
+				return (
+					<div>
+						<h1>{this.props.msg}</h1>
+					</div>
+				)
+
+			}
+		});
+
+		function HelloWorldJQ(){
+			var _template = '<h1>Welcome to jQuery</h1>';
+			var $viewEle = this.$viewEle = $('<div></div>');
+			this.render = function(){
+				$viewEle.html(_template);
+				return this;
+			}
+		};
+
+		var hwjq = new HelloWorldJQ();
+
+		$(function(){
+			$('#btnRenderReact').click(function(){
+				console.log('render triggered - [React]')
+				var message = prompt('Enter the message');
+				ReactDOM.render(<HelloWorld msg={message}></HelloWorld>, document.getElementById('react-content'));
+			});
+
+			$('#btnRenderjQuery').click(function(){
+				console.log('render triggered - [jQuery]')
+				hwjq.render().$viewEle.appendTo('#jquery-content');
+			})
+		})
+		
+		
+	</script>
+</head>
+<body>
+	<input type="button" value="Render React" id="btnRenderReact">
+	<div id="react-content">
+		
+	</div>
+	<input type="button" value="Render jQuery" id="btnRenderjQuery">
+	<div id="jquery-content">
+		
+	</div>
+</body>
+</html>
