@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Product List</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+		.field{
+			margin-bottom: 10px;
+		}
+		label{
+			display: block;
+		}
+		
+	</style>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		var DisplayList = React.createClass({
+			render : function(){
+				var data = this.props.model;
+				var items = data.map(function(item, index){
+					return (<li key={index}>{item}</li>);
+				});
+				return(
+					<ol>
+						{items}
+					</ol>
+				)
+			}
+		})
+		
+		function renderApp(){
+			var products = ['Pen', 'Pencil', 'Marker'];
+			ReactDOM.render(
+					<DisplayList model={products}></DisplayList>, 
+				document.getElementById('content'));
+		}
+		
+		renderApp();
+
+	</script>
+</head>
+<body>
+	<h1>Products</h1>
+	<hr>
+	<div id="content">
+	</div>
+</body>
+</html>
