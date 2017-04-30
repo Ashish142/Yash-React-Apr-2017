@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React - Intro</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="jquery-3.2.1.js"></script>
+
+	<script type="text/babel">
+		var Greeter = React.createClass({
+			render : function(){
+				
+				return (
+					<div>
+						<h1>{this.props.msg}</h1>
+					</div>
+				)
+
+			}
+		});
+		
+		function greet(){
+			var name = document.getElementById('txtName').value;
+			var greetMsg = 'Hi ' + name + ', Have a nice day!';
+
+			ReactDOM.render(<Greeter msg={greetMsg}></Greeter>, document.getElementById('react-content'));
+		}
+
+		
+		document.getElementById('btnGreet').addEventListener('click', greet);
+		
+	</script>
+</head>
+<body>
+	<label for="txtName">Name : </label>
+	<input type="text" id="txtName">
+	<input type="button" value="Greet" id="btnGreet">
+	<div id="react-content">
+		
+	</div>
+</body>
+</html>

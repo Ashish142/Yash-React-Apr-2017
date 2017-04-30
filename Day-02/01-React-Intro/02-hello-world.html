@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React - Intro</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="jquery-3.2.1.js"></script>
+
+	<script type="text/babel">
+		var HelloWorld = React.createClass({
+			render : function(){
+				
+				return (
+					<div>
+						<h1>{this.props.msg}</h1>
+					</div>
+				)
+
+			}
+		});
+
+		ReactDOM.render(<HelloWorld msg={'Welcome to React.js!'}></HelloWorld>, document.getElementById('react-content'));
+			
+
+			
+		
+		
+	</script>
+</head>
+<body>
+	<input type="button" value="Render React" id="btnRenderReact">
+	<div id="react-content">
+		
+	</div>
+</body>
+</html>
