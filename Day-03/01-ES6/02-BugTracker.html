@@ -118,8 +118,12 @@
 		}
 
 		let BugItem = function({bug}){
+			console.log(bug);
 			return (
-				<li><span className="bugname">{bug.name}</span></li>
+				<li>
+					<span className="bugname" onClick={() => bug.toggle()}>{bug.name}</span>
+					<div><i>{bug.isClosed.toString()}</i></div>
+				</li>
 			)
 		};
 
