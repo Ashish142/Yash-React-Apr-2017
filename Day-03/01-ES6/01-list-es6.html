@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Product List</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+		.field{
+			margin-bottom: 10px;
+		}
+		label{
+			display: block;
+		}
+		
+	</style>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		var EventEmitter = (function(){
+			let changeListenersSymbol = Symbol();
+			class EventEmitter{
+				constructor(){
+					this[changeListenersSymbol] = [];
+				}
+				subscribe(listenerFn){
+					this[changeListenersSymbol].push(listenerFn);
+				}
+
+				trigger(){
+					this[changeListenersSymbol].forEach( listener => listener() );
+				}
+			}
+			return EventEmitter;
+		})();
+
+		var ProductListModel = (function(EventEmitter){
+			let listSymbol = Symbol();
+			class ProductListModel extends EventEmitter{
+				constructor(){
+					super();
+					this[listSymbol] = [];
+				}
+
+				add(name){
+					this[listSymbol].push(name);
+					this.trigger();
+				}
+
+				remove(name){
+					this[listSymbol].splice(this[listSymbol].indexOf(name), 1);
+					this.trigger();
+				}
+
+				toJSON(){
+					return this[listSymbol].slice(0);
+				}
+			}
+			return ProductListModel;
+		})(EventEmitter);
+
+		class ProductList extends React.Component{
+			onAddClick(){
+				var productName = this.refs.txtName.value;
+				this.props.model.add(productName);
+			}
+			removeProduct(name){
+				this.props.model.remove(name)
+			}
+			render(){
+				let products = this.props.model.toJSON();
+				let items = products.map( (item,index) => 
+					(<ProductItem key={index} model={item} onRemove={this.removeProduct.bind(this)} />) );			
+				return(
+					<div>
+						<input type="text" ref="txtName" />
+						<input type="button" value="Add New" onClick={this.onAddClick.bind(this)}/>
+						<ol>
+							{items}
+						</ol>
+					</div>
+				)
+			}
+
+		}
+		
+		var ProductItem = function(props){
+			return (
+				<li>
+					<span>{props.model}</span>
+					<span>
+						<input type="button" value="Remove" onClick={ () => props.onRemove(props.model)}/>
+					</span>
+				</li>);
+		};
+		
+		var products = new ProductListModel();
+		function renderApp(){
+			
+			ReactDOM.render(
+					<ProductList model={products}></ProductList>, 
+				document.getElementById('content'));
+		}
+		products.subscribe(renderApp);
+		renderApp();
+
+	</script>
+</head>
+<body>
+	<h1>Products</h1>
+	<hr>
+	<div id="content">
+	</div>
+</body>
+</html>
