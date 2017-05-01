@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bug Tracker</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+		section{
+			margin-bottom: 10px;
+		}
+		ol{
+			width: 500px;
+			list-style: none;
+			-webkit-padding-start : 0px;
+		}
+	
+		li{
+			margin-bottom: 10px;
+			border : 1px solid gray;
+			background-color: #e7e7e7;
+			padding: 5px;
+			border-radius: 5px;
+		}
+		.bugname, .stats{
+			font-size: 22pt;
+		}
+		.bugname{
+			cursor : pointer;
+		}
+		.closed{
+			color : red;
+			text-decoration: line-through;
+			font-style: italic;
+			font-weight: bold;
+		}
+	</style>
+	<script type="text/usecases">
+		1. Add a value
+		2. Subtract a value
+	</script>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="redux.js"></script>
+	<script type="text/babel">
+		
+		function createStore(reducer){
+			var init_action = { type : 'INIT_STATE'};
+			var _currentState = reducer(undefined, init_action);
+			var changeListeners = [];
+
+			function subscribe(listenerFn){
+				changeListeners.push(listenerFn)
+			}
+
+			function dispatch(action){
+				var _newState = reducer(_currentState, action);
+				if (_newState !== _currentState){
+					_currentState = _newState;
+					trigger();
+				}
+			}
+
+			function getState(){
+				return _currentState;
+			}
+
+			function trigger(){
+				changeListeners.forEach( listener => listener() );
+			}
+			
+			return {
+				subscribe : subscribe,
+				dispatch : dispatch,
+				getState : getState
+			}
+		}
+
+		function calculatorReducer(currentState = 0, action){
+			switch(action.type){
+		        case 'add' :
+					return currentState + action.payload;
+		        case 'subtract':
+					return currentState - action.payload;
+		        default:
+					return currentState;
+			}
+		}
+		
+		class Calculator extends React.Component{
+			onAddClick(){
+				var addAction = { type : 'add', payload : parseInt(this.refs.num.value, 10)};
+				this.props.store.dispatch(addAction);
+			}
+			onSubtractClick(){
+				var subAction = { type : 'subtract', payload : parseInt(this.refs.num.value, 10)};
+				this.props.store.dispatch(subAction);
+			}
+			render(){
+				var currentResult = this.props.store.getState();
+				return (
+					<div>
+						<input type="number" ref="num"/>
+						<input type="button" value="Add" onClick={this.onAddClick.bind(this)}/>
+						<input type="button" value="Subtract" onClick={this.onSubtractClick.bind(this)}/>
+						<div>{currentResult}</div>
+					</div>
+				)
+			}
+		}
+
+		var store = createStore(calculatorReducer);
+		
+		function renderApp(){
+			ReactDOM.render(<Calculator store={store}></Calculator>, document.getElementById('content'));
+		}
+		store.subscribe(renderApp);
+		renderApp();
+	</script>
+</head>
+<body>
+	<h1>Calculator</h1>
+	 <hr>
+	 <section id="content">
+	 	
+	 </section> 
+</body>
+</html>
