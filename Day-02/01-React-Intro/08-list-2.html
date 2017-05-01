@@ -43,9 +43,14 @@
 			};
 
 			function triggerChange(){
-				_changeListeners.forEach(function(listener){
+				/* _changeListeners.forEach(function(listener){
 					listener();
-				});
+				}); */
+
+				for(var i=0; i < _changeListeners.length; i++){
+					var listener = _changeListener[i];
+					listener();
+				}
 			}
 		}
 		var ProductList = React.createClass({
@@ -53,7 +58,7 @@
 				var productName = this.refs.txtName.value;
 				this.props.model.add(productName);
 			},
-			onRemoveClick : function(index){
+			removeProduct : function(index){
 				this.props.model.remove(index)
 			},
 			render : function(){
@@ -61,12 +66,8 @@
 				var self = this;
 				var items = products.map(function(item, index){
 					return (
-						<li key={index}>
-							<span>{item}</span>
-							<span>
-								<input type="button" value="Remove" onClick={() => self.props.model.remove(index)}/>
-							</span>
-						</li>);
+						<ProductItem key={index} model={item} productIndex={index} onRemove={self.removeProduct} />
+					);
 				});
 				return(
 					<div>
@@ -78,7 +79,35 @@
 					</div>
 				)
 			}
+		});
+		
+		/*
+		var ProductItem = React.createClass({
+			onRemoveClick : function(){
+				this.props.onRemove(this.props.productIndex);
+			},
+			render : function(){
+				var item = this.props.model;
+				return (
+					<li>
+						<span>{item}</span>
+						<span>
+							<input type="button" value="Remove" onClick={this.onRemoveClick}/>
+						</span>
+					</li>);
+			}
 		})
+		*/
+
+		var ProductItem = function(props){
+			return (
+				<li>
+					<span>{props.model}</span>
+					<span>
+						<input type="button" value="Remove" onClick={() => props.onRemove(props.productIndex)}/>
+					</span>
+				</li>);
+		}
 		
 		var products = new ProductListModel();
 		function renderApp(){
