@@ -22,7 +22,7 @@ function BugApp({ bugs, addNew, removeClosed, toggle }){
 
 function mapStateToProps(state){
 	return {
-		bugs : state
+		bugs : state.bugsData
 	};
 }
 
