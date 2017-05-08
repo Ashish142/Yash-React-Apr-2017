@@ -138,6 +138,16 @@
 			}
 			return boundActions;
 		}
+
+		function bindAsyncActionCreators(actionCreators, dispatch){
+			var boundActions = {};
+			for(let key in actionCreators){
+				boundActions[key] = function(){
+					actionCreators[key].apply(this, [dispatch, ...arguments]);
+				}
+			}
+			return boundActions;
+		}
 		
 		
 		

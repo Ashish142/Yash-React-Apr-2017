@@ -1,16 +1,13 @@
 function bugsReducer(currentState = [], action){		
 	switch(action.type){
+		case 'LOAD_BUG_DATA' :
+			return [...currentState, ...action.payload];
         case 'ADD_NEW' :
-			var newBug = {
-				name : action.payload,
-				isClosed : false
-			};
-			return [...currentState, newBug];
-
+			return [...currentState, action.payload];
         case 'TOGGLE':
-        	var bugToToggle = action.payload;
+        	var toggledBug = action.payload;
 			return currentState.map(bug => 
-				bug === bugToToggle ? Object.assign({}, bug, {isClosed : !bug.isClosed}) : bug);
+				bug.id === toggledBug.id ? toggledBug : bug);
 
 		case 'REMOVE_CLOSED':
 			return currentState.filter(bug => !bug.isClosed);

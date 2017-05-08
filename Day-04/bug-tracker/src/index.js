@@ -5,17 +5,34 @@ import './index.css';
 
 import { Provider } from 'react-redux';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import bugsReducer from './reducers/bugsReducer';
 import calculatorReducer from './reducers/calculatorReducer';
+
+import thunk from 'redux-thunk';
 
 var allReducers = combineReducers({
 	calculatorData : calculatorReducer,
 	bugsData : bugsReducer
 });
 
-let store = createStore(allReducers);
+function logger({ getState }) {
+  return (next) => (action) => {
+    console.log('will dispatch', action)
+
+    // Call the next dispatch method in the middleware chain.
+    let returnValue = next(action)
+
+    console.log('state after dispatch', getState())
+
+    // This will likely be the action itself, unless
+    // a middleware further in chain changed it.
+    return returnValue
+  }
+}
+
+let store = createStore(allReducers, applyMiddleware(thunk, logger));
 
 console.log(store.getState());
 

@@ -22,6 +22,26 @@
       "id": 7,
       "name": "Routing is not working again!",
       "isClosed": false
+    },
+    {
+      "name": "Testing server communication",
+      "isClosed": false,
+      "id": 8
+    },
+    {
+      "name": "Dispatch is not dispatching",
+      "isClosed": false,
+      "id": 9
+    },
+    {
+      "name": "component not displaying data",
+      "isClosed": false,
+      "id": 10
+    },
+    {
+      "name": "New data loading",
+      "isClosed": false,
+      "id": 11
     }
   ],
   "employees": [
